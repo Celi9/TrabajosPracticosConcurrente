@@ -9,26 +9,15 @@ public class AdministradorTurnos {
 		this.cantidadTurnos = cantidadTurnos;
 	}
 
-	public synchronized boolean imprimir(char letra, int id) {
-
-		boolean exito = false;
-		if (turnoActual == id) {
-			int i = 0;
-			while (i < id) {
-				System.out.print(letra);
-				i++;
-			}
-			this.incrementarTurno();
-			exito = true;
-		}
-		return exito;
+	public synchronized boolean esTurno(int turno) {
+		return this.turnoActual == turno;
 	}
 
-	private synchronized void incrementarTurno() {
+	public synchronized void incrementarTurno() {
 		this.turnoActual++;
 		if (this.turnoActual > cantidadTurnos) {
 			this.turnoActual = 1;
-			System.out.println();
+//			System.out.println();
 		}
 	}
 }

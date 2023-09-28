@@ -1,19 +1,38 @@
 package ejercicio7;
 
+import javax.swing.JOptionPane;
+
 public class Main {
 
 	public static void main(String[] args) {
-		AdministradorTurnos adm = new AdministradorTurnos(3);
-		Runnable a = new HiloLetra(1, 'A', adm);
-		Runnable b = new HiloLetra(2, 'B', adm);
-		Runnable c = new HiloLetra(3, 'C', adm);
 
-		Thread letraA = new Thread(a);
-		Thread letraB = new Thread(b);
-		Thread letraC = new Thread(c);
+		int repSecuencia = Integer
+				.valueOf(JOptionPane.showInputDialog("Ingrese la cantidad de repeticiones de la secuencia: "));
+		int cantLetras = Integer.valueOf(JOptionPane.showInputDialog("Ingrese el número letras: "));
 
-		letraA.start();
-		letraB.start();
-		letraC.start();
+		HiloLetra.setRepSecuencia(repSecuencia);
+		AdministradorTurnos adm = new AdministradorTurnos(cantLetras);
+
+		Runnable letras[] = new Runnable[cantLetras];
+		String letra;
+		int repLetra;
+
+		JOptionPane.showMessageDialog(null, "A continuación ingrese las letras en orden...");
+		for (int i = 0; i < letras.length; i++) {
+			letra = JOptionPane.showInputDialog("Ingrese una letra");
+			repLetra = Integer.valueOf(JOptionPane.showInputDialog("Indique la cantidad de repeticiones de la letra"));
+			letras[i] = new HiloLetra(i + 1, repLetra, letra.charAt(0), adm);
+		}
+
+		Thread hilosLetras[] = new Thread[cantLetras];
+
+		for (int i = 0; i < hilosLetras.length; i++) {
+			hilosLetras[i] = new Thread(letras[i]);
+		}
+
+		for (int i = 0; i < hilosLetras.length; i++) {
+			hilosLetras[i].start();
+		}
+
 	}
 }
